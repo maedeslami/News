@@ -36,7 +36,11 @@ public class News implements Runnable {
 
     @Override
     public void run() {
-
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //ToDo priority and headline inja begu
         System.out.println("thread run shod");
     }

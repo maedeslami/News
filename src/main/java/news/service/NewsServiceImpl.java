@@ -25,7 +25,6 @@ public class NewsServiceImpl implements NewsService {
             news.setHeadline("upGood");
             Thread thread = new Thread(news);
             thread.start();
-            Thread.sleep(5000);
             System.out.println(news.getHeadline() +  "       " + "this is a headline");
             return jiringDao.save(news);
         }
