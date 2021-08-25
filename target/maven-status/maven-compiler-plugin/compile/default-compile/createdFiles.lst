@@ -1,0 +1,5 @@
+news\service\NewsServiceImpl.class
+news\MainApp.class
+news\model\News$NewsBuilder.class
+news\model\News.class
+news\service\NewsService.class
