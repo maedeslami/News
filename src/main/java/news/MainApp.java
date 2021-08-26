@@ -1,6 +1,7 @@
 package news;
 
 import news.model.News;
+import news.model.NewsDto;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -16,13 +17,13 @@ public class MainApp {
         while (true)
 
         {
-            News news=new News();
-            news.setPriority(1);
-            news.setHeadline("Good news");
-            Thread thread = new Thread(news);
+            NewsDto dto=new NewsDto();
+            dto.setPriority(1);
+            dto.setHeadline("Good news");
+            Thread thread = new Thread(dto);
             thread.start();
-            Thread.sleep(5000);
-            System.out.println(news.getHeadline() +  "    " + "this is a headline");
+           Thread.sleep(5000);
+            System.out.println(dto.getHeadline() +  "    " + "this is a headline");
 
         }
 
