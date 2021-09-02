@@ -1,5 +1,8 @@
-news\service\NewsServiceImpl.class
 news\MainApp.class
-news\model\News$NewsBuilder.class
 news\model\News.class
 news\service\NewsService.class
+news\model\NewsDto.class
+news\controller\NewsController.class
+news\service\NewsServiceImpl.class
+news\config\NewsDiscovery.class
+news\repository\JiringDao.class

@@ -1,6 +1,7 @@
 package news.controller;
 
 import news.model.News;
+import news.model.NewsDto;
 import news.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,9 @@ public class NewsController {
     NewsService newsService;
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
-    public ResponseEntity<String> send() throws InterruptedException {
-        return newsService.sendmockNews();
-
+    public String executeRoot()  {
+        NewsDto newsDto = new NewsDto();
+         newsService.executeParallelNews(newsDto,System.out::println);
+        return "SENT";
     }
 }

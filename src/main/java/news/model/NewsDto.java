@@ -1,11 +1,23 @@
 package news.model;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * Created by Lenovo on 8/26/2021.
  */
-public class NewsDto implements Runnable {
+public class NewsDto implements Serializable {
     private int priority;
-    private String headline;
+    private List<String> headline;
+
+    public List<String> getHeadline() {
+        return headline;
+    }
+
+    public NewsDto setHeadline(List<String> headline) {
+        this.headline = headline;
+        return this;
+    }
 
     public int getPriority() {
         return priority;
@@ -16,18 +28,12 @@ public class NewsDto implements Runnable {
         return this;
     }
 
-    public String getHeadline() {
-        return headline;
-    }
 
-    public NewsDto setHeadline(String headline) {
+    public NewsDto(int priority, List<String> headline) {
+        this.priority = priority;
         this.headline = headline;
-        return this;
     }
 
-    @Override
-    public void run() {
-        //ToDo priority and headline inja begu
-        System.out.println("thread run shod");
+    public NewsDto() {
     }
 }

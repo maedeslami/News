@@ -1,11 +1,15 @@
 package news.service;
 
-import news.model.News;
-import org.springframework.http.ResponseEntity;
+import news.model.NewsDto;
+
+import java.util.function.Consumer;
 
 /**
  * Created by Lenovo on 8/25/2021.
  */
 public interface NewsService {
-        ResponseEntity<String> sendmockNews() throws InterruptedException;
+    public void executeParallelNews(NewsDto newsDto, Consumer<String> response);
+
+    public void sendMockNews(NewsDto newsDto, Consumer<String> response);
+
 }
