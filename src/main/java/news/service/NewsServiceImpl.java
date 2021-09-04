@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class NewsServiceImpl implements NewsService {
 
-    private int numberOfThread = 25 ;
-    int[] priority = new int[]{
+    private int numberOfThread = 25;
+    private int[] priority = new int[]{
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             1, 1, 1, 1, 1, 1, 1, 1, 1,
             2, 2, 2, 2, 2, 2, 2, 2,
@@ -34,15 +34,12 @@ public class NewsServiceImpl implements NewsService {
     };
 
     @Override
-    public void executeParallelNews(NewsDto newsDto, Consumer<String> response) {
+    public void executeParallelNews(NewsDto newsDto, Consumer<String> response) throws InterruptedException {
         for (int counter = 0; counter <= numberOfThread; counter++) {
             Thread thread = new Thread(() -> this.sendMockNews(newsDto, response));
             thread.start();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(1000);
+
         }
     }
 
@@ -63,20 +60,19 @@ public class NewsServiceImpl implements NewsService {
         headline.add("rise");
         headline.add("fall");
         Random random = ThreadLocalRandom.current();
-
-        shuffleArray(priority);
-        for (int i = 0; i < priority.length; i++) {
-            newsDto.setPriority(priority[i]);
-
-        }
         //combination
         List<String> combination = random
                 .ints(3 + random.nextInt(3), 0, headline.size())
                 .mapToObj(headline::get)
                 .collect(Collectors.toList());
-
         newsDto.setHeadline(combination);
 
+        //priority
+        shuffleArray(priority);
+        for (int i = 0; i < priority.length; i++) {
+            newsDto.setPriority(priority[i]);
+        }
+        //rest
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(NewsDiscovery.EXECUTE, newsDto, String.class);
         response.accept(responseEntity.getBody());

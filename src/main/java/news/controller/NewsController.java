@@ -16,7 +16,7 @@ public class NewsController {
     NewsService newsService;
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
-    public String executeRoot() {
+    public String executeRoot() throws InterruptedException {
         NewsDto newsDto = new NewsDto();
         newsService.executeParallelNews(newsDto, System.out::println);
         return "SENT";
