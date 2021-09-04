@@ -2,8 +2,6 @@ package news.service;
 
 import news.config.NewsDiscovery;
 import news.model.NewsDto;
-import news.repository.JiringDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,9 +18,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class NewsServiceImpl implements NewsService {
-    @Autowired
-    JiringDao jiringDao;
-    private int numberOfThread = 10;
+
+    private int numberOfThread = 25 ;
     int[] priority = new int[]{
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -38,11 +35,14 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public void executeParallelNews(NewsDto newsDto, Consumer<String> response) {
-
-
         for (int counter = 0; counter <= numberOfThread; counter++) {
             Thread thread = new Thread(() -> this.sendMockNews(newsDto, response));
             thread.start();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -62,15 +62,6 @@ public class NewsServiceImpl implements NewsService {
         headline.add("low");
         headline.add("rise");
         headline.add("fall");
-//        //positive List
-//        List<String> positive = new ArrayList<>();
-//        positive.add("up");
-//        positive.add("good");
-//        positive.add("rise");
-//        positive.add("success");
-//        positive.add("high");
-//        positive.add("über");
-
         Random random = ThreadLocalRandom.current();
 
         shuffleArray(priority);
@@ -86,17 +77,6 @@ public class NewsServiceImpl implements NewsService {
 
         newsDto.setHeadline(combination);
 
-//        System.out.println("this news has priority :" + newsDto.getPriority() + "  and this news has this headline value: " + newsDto.getHeadline());
-//
-//        //check positive or not
-//        double percent = 100.0 * combination.stream().filter(positive::contains).count() / combination.size();
-//
-//        if (percent > 50) {
-//            System.out.println("its positive");
-//        }
-//        if (newsDto.getPriority() == 9 && percent > 50) {
-//            System.out.println("This message is more than 50% about a positive Things and contains this headline :" + combination + " and has prioity :" + newsDto.getPriority());
-//        }
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(NewsDiscovery.EXECUTE, newsDto, String.class);
         response.accept(responseEntity.getBody());
